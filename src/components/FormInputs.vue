@@ -2,7 +2,7 @@
     <div>
         <h5 class="mt-5">{{ textInputLabel }}</h5>
         <InputText
-            :modelValue="textInputValue"
+            :modelValue="formData.nombre"
             :placeholder="textInputPlaceholder"
             @update:modelValue="updateTextInput"
         ></InputText>
@@ -11,7 +11,7 @@
         <h5 class="mt-5">{{ checkboxTtitle }}</h5>
         <div class="d-flex flex-row">
             <div
-                v-for="(option, index) in checkboxOptions"
+                v-for="(option, index) in formData.categorias"
                 :key="index"
             >
                 <InputCheckbox
@@ -27,7 +27,7 @@
         <h5 class="mt-5">{{ radioTitle }}</h5>
         <div class="d-flex flex-row">
             <div
-                v-for="(option, index) in radioOptions"
+                v-for="(option, index) in formData.estado"
                 :key="index"
             >
                 <InputRadio
@@ -43,7 +43,7 @@
         <h5 class="mt-5">{{ NumTitle }}</h5>
 
         <InputNumber
-            :modelValue="numberInputValue"
+            :modelValue="formData.numero"
             :placeholder="numberInputPlaceholder"
             @update:modelValue="updateNumberInput"
         ></InputNumber>
@@ -51,7 +51,7 @@
     </div>
 
     <button
-        class="mt-5 btn btn-dark"
+        class="mt-3  mb-5 btn btn-dark"
         type="submit"
         :disabled="disableBtn"
     >{{ btnName }}</button>
@@ -62,7 +62,7 @@ import InputText from './InputText.vue'
 import InputCheckbox from './InputCheckbox.vue'
 import InputRadio from './InputRadio.vue'
 import InputNumber from './InputNumber.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     checkboxTtitle: String,
@@ -70,17 +70,14 @@ const props = defineProps({
     NumTitle: String,
     btnName: String,
     textInputLabel: String,
-    textInputValue: String,
     textInputPlaceholder: String,
-    radioOptions: Array,
-    checkboxOptions: Array,
-    numberInputValue: Number,
     numberInputPlaceholder: String,
+    formData: Object
 })
 
 
 // Emits
-const emit = defineEmits([ 'updateTextInput', 'updateRadioInput', 'updateCheckboxInput', 'updateNumberInput' ])
+const emit = defineEmits([ 'updateTextInput', 'updateRadioInput', 'updateCheckboxInput', 'updateNumberInput', 'btnClick' ])
 
 // Methods
 const updateTextInput = (value) => emit('updateTextInput', value)
@@ -92,19 +89,19 @@ const updateNumberInput = (value) => emit('updateNumberInput', value)
 const disableBtn = computed(() =>
 {
     // Verificar si el campo de texto está vacío
-    const isTextInputEmpty = !props.textInputValue.trim()
-    console.log(props.textInputValue)
+    const isTextInputEmpty = !props.formData.nombre || !props.formData.nombre.trim()
 
     // Verificar si al menos uno de los checkbox está marcado
-    const isAtLeastOneCheckboxChecked = props.checkboxOptions.some(option => option.checked)
-    console.log(isAtLeastOneCheckboxChecked)
+    const isAtLeastOneCheckboxChecked = props.formData.categorias.some(option => option.checked)
 
     // Verificar si al menos uno de los radio está marcado
-    const isAtLeastOneRadioChecked = props.radioOptions.some(option => option.checked)
-    console.log(isAtLeastOneRadioChecked)
+    const isAtLeastOneRadioChecked = props.formData.estado.some(option => option.checked)
+
     // Deshabilitar el botón si el campo de texto está vacío, ningún checkbox está marcado
     // o ningún radio está marcado
-    return isTextInputEmpty || !isAtLeastOneCheckboxChecked || !isAtLeastOneRadioChecked
-});
+    const isDisabled = isTextInputEmpty || !isAtLeastOneCheckboxChecked || !isAtLeastOneRadioChecked
+
+    return isDisabled
+})
 
 </script>
