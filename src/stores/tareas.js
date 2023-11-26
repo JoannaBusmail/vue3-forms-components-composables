@@ -18,6 +18,7 @@ export const useTareaStore = defineStore('tareas', () => {
  if(localStorage.getItem('tareas')){
   tareasList.value = JSON.parse(localStorage.getItem('tareas'))
  }
+ 
 //actions
 const addTareas = (tarea) =>{
   tareasList.value.push(tarea)

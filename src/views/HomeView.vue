@@ -24,7 +24,7 @@
 <script setup>
 import FormInputs from '@/components/FormInputs.vue'
 import ListaTareas from '@/components/ListaTareas.vue'
-import { ref, watch, onMounted } from 'vue'
+import { watch, onMounted } from 'vue'
 import { useTareaStore } from '@/stores/tareas'
 import { storeToRefs } from 'pinia'
 import { checkboxpOptions, radioOptions } from '../utils/formOptions'
