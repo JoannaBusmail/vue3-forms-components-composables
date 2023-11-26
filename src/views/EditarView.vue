@@ -55,10 +55,15 @@ onMounted(async () =>
 
     formState.value = {
         nombre: tarea.value.nombre || '',
+        //get the options from the store and set the checked property
+        //to true if the option is in the tarea.categorias array
+
         categorias: checkboxSelect.value.map(option => ({
             ...option,
             checked: tarea.value.categorias.includes(option.id),
         })),
+        //get the options from the store and set the checked property
+        //to true if the option is in the tarea.estado array
         estado: radioSelect.value.map(option => ({
             ...option,
             checked: option.id === tarea.value.estado,

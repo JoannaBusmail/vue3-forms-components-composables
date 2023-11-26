@@ -11,35 +11,32 @@
     <div>
         <h5 class="mt-5">{{ checkboxTtitle }}</h5>
         <div class="d-flex flex-row">
-            <div
+            <InputCheckbox
                 v-for="(option, index) in formData.categorias"
                 :key="index"
-            >
-                <InputCheckbox
-                    :label="option.label"
-                    :id="option.id"
-                    :checked="option.checked"
-                    @update:checked="updateCheckboxInput"
-                ></InputCheckbox>
-            </div>
+                :label="option.label"
+                :id="option.id"
+                :checked="option.checked"
+                @update:checked="updateCheckboxInput"
+            ></InputCheckbox>
         </div>
     </div>
+
     <div>
         <h5 class="mt-5">{{ radioTitle }}</h5>
         <div class="d-flex flex-row">
-            <div
+
+            <InputRadio
                 v-for="(option, index) in formData.estado"
                 :key="index"
-            >
-                <InputRadio
-                    :label="option.label"
-                    :id="option.id"
-                    :checked="option.checked"
-                    @update:checked="updateRadioInput"
-                ></InputRadio>
-            </div>
+                :label="option.label"
+                :id="option.id"
+                :checked="option.checked"
+                @update:checked="updateRadioInput"
+            ></InputRadio>
         </div>
     </div>
+
     <div>
         <h5 class="mt-5">{{ NumTitle }}</h5>
 
@@ -63,7 +60,7 @@ import InputText from './InputText.vue'
 import InputCheckbox from './InputCheckbox.vue'
 import InputRadio from './InputRadio.vue'
 import InputNumber from './InputNumber.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     checkboxTtitle: String,
@@ -85,13 +82,16 @@ const updateRadioInput = (id) =>
 {
     props.formData.estado.forEach((option) =>
     {
+        //if id is equal to option.id then set checked to true
+        //can only be one radio button checked at a time
         option.checked = option.id === id
     })
 }
 
 const updateCheckboxInput = (id, checked) =>
 {
-    console.log('Updating checkbox:', id, 'Checked:', checked)
+    //if id is equal to option.id then set checked to true
+    // can be multiple checkboxes checked at a time
     const option = props.formData.categorias.find(option => option.id === id)
     if (option) {
         option.checked = checked
