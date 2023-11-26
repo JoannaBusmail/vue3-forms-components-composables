@@ -5,6 +5,7 @@
         class="form-control my-4 "
         placeholder="placeholder"
         :value="modelValue"
+        :min="0"
         @input="handleInputNum"
     >
 </template>
