@@ -27,9 +27,9 @@ const props = defineProps({
 
 const emit = defineEmits([ 'update:checked' ])
 
-const handleRadio = (event) =>
+const handleRadio = () =>
 {
-    emit('update:checked', { id: props.id, checked: event.target.checked })
+    emit('update:checked', props.id, event.target.checked)
 }
 
 </script>

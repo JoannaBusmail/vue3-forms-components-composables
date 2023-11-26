@@ -4,8 +4,9 @@
         <InputText
             :modelValue="formData.nombre"
             :placeholder="textInputPlaceholder"
-            @update:modelValue="updateTextInput"
+            @update:modelValue="emit('update:textInputValue', $event)"
         ></InputText>
+
     </div>
     <div>
         <h5 class="mt-5">{{ checkboxTtitle }}</h5>
@@ -43,9 +44,9 @@
         <h5 class="mt-5">{{ NumTitle }}</h5>
 
         <InputNumber
-            :modelValue="formData.numero"
+            :modelValue="parseInt(formData.numero)"
             :placeholder="numberInputPlaceholder"
-            @update:modelValue="updateNumberInput"
+            @update:modelValue="emit('update:numberInputValue', $event)"
         ></InputNumber>
 
     </div>
@@ -62,7 +63,7 @@ import InputText from './InputText.vue'
 import InputCheckbox from './InputCheckbox.vue'
 import InputRadio from './InputRadio.vue'
 import InputNumber from './InputNumber.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
     checkboxTtitle: String,
@@ -77,28 +78,35 @@ const props = defineProps({
 
 
 // Emits
-const emit = defineEmits([ 'updateTextInput', 'updateRadioInput', 'updateCheckboxInput', 'updateNumberInput', 'btnClick' ])
+const emit = defineEmits([ 'update:textInputValue', 'updateRadioInput', 'updateCheckboxInput', 'update:numberInputValue', 'btnClick' ])
 
-// Methods
-const updateTextInput = (value) => emit('updateTextInput', value)
-const updateRadioInput = (data) => emit('updateRadioInput', data)
-const updateCheckboxInput = (data) => emit('updateCheckboxInput', data)
-const updateNumberInput = (value) => emit('updateNumberInput', value)
+
+const updateRadioInput = (id) =>
+{
+    props.formData.estado.forEach((option) =>
+    {
+        option.checked = option.id === id
+    })
+}
+
+const updateCheckboxInput = (id, checked) =>
+{
+    console.log('Updating checkbox:', id, 'Checked:', checked)
+    const option = props.formData.categorias.find(option => option.id === id)
+    if (option) {
+        option.checked = checked
+    }
+}
 
 
 const disableBtn = computed(() =>
 {
-    // Verificar si el campo de texto está vacío
     const isTextInputEmpty = !props.formData.nombre || !props.formData.nombre.trim()
 
-    // Verificar si al menos uno de los checkbox está marcado
     const isAtLeastOneCheckboxChecked = props.formData.categorias.some(option => option.checked)
 
-    // Verificar si al menos uno de los radio está marcado
     const isAtLeastOneRadioChecked = props.formData.estado.some(option => option.checked)
 
-    // Deshabilitar el botón si el campo de texto está vacío, ningún checkbox está marcado
-    // o ningún radio está marcado
     const isDisabled = isTextInputEmpty || !isAtLeastOneCheckboxChecked || !isAtLeastOneRadioChecked
 
     return isDisabled

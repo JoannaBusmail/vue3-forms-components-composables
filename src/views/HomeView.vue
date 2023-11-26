@@ -13,10 +13,8 @@
         textInputPlaceholder="name"
         :formData="formState"
         numberInputPlaceholder="number"
-        @updateTextInput="updateTextInput"
-        @updateRadioInput="updateRadioOptions"
-        @updateCheckboxInput="updateCheckboxOptions"
-        @updateNumberInput="updateNumberInput"
+        @update:textInputValue="updateTextInput"
+        @update:numberInputValue="updateNumberInput"
       ></FormInputs>
       <ListaTareas></ListaTareas>
     </form>
@@ -30,10 +28,14 @@ import { ref, watch, onMounted } from 'vue'
 import { useTareaStore } from '@/stores/tareas'
 import { storeToRefs } from 'pinia'
 import { checkboxpOptions, radioOptions } from '../utils/formOptions'
+import { useGetFormInputs } from '../composables/getFormInputs'
 import shortid from 'shortid'
 
 
+//composable
+const { formState, updateTextInput, updateNumberInput, getSelectedRadioValue, getSelectedCheckboxValues, resetForm } = useGetFormInputs(checkboxpOptions.categorias, radioOptions.estado)
 
+//store
 const useTarea = useTareaStore()
 const { addTareas } = useTarea
 const { tareasList, tareasListUpdated } = storeToRefs(useTarea)
@@ -50,56 +52,8 @@ onMounted(() =>
   tareasList.value = JSON.parse(localStorage.getItem('tareas')) || []
 })
 
-const formState = ref({
-  nombre: '',
-  ...checkboxpOptions,
-  ...radioOptions,
-  numero: 0,
-
-})
 
 
-const updateTextInput = (value) =>
-{
-  formState.value.nombre = value
-}
-
-const updateRadioOptions = (data) =>
-{
-  //marcar opcion seleccionada y desmarcar las otras
-  formState.value.estado.forEach(option =>
-  {
-    option.checked = option.id === data.id
-  })
-}
-
-const updateCheckboxOptions = (data) =>
-{
-  //marco o desmarco segun clico, puedo marcar varias opciones
-  const option = formState.value.categorias.find(option => option.id === data.id)
-  if (option) {
-    option.checked = data.checked
-    console.log(option)
-  }
-}
-
-const updateNumberInput = (value) =>
-{
-  formState.value.numero = value
-}
-
-const getSelectedRadioValue = () => formState.value.estado.find((option) => option.checked)?.id
-const getSelectedCheckboxValues = () => formState.value.categorias.filter((option) => option.checked).map((option) => option.id)
-
-const resetForm = () =>
-{
-  formState.value.nombre = ''
-  formState.value.estado.forEach((option) => (option.checked = false))
-  formState.value.categorias.forEach((option) => (option.checked = false))
-  formState.value.numero = 0
-}
-
-//llamar a setTareas del store tareas dentro de handleUpdateForm
 const handleUpdateForm = () =>
 {
   const newTarea = {

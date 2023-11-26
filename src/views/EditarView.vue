@@ -18,10 +18,8 @@
                 textInputPlaceholder="name"
                 :formData="formState"
                 numberInputPlaceholder="number"
-                @updateTextInput="updateTextInput"
-                @updateRadioInput="updateRadioOptions"
-                @updateCheckboxInput="updateCheckboxOptions"
-                @updateNumberInput="updateNumberInput"
+                @update:textInputValue="updateTextInput"
+                @update:numberInputValue="updateNumberInput"
             >
 
             </FormInputs>
@@ -37,6 +35,7 @@ import { onMounted, ref } from 'vue'
 import { useTareaStore } from '@/stores/tareas'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
+import { useGetFormInputs } from '../composables/getFormInputs'
 
 
 const useTarea = useTareaStore()
@@ -53,12 +52,9 @@ const radioSelect = ref(radioOptions.estado)
 
 
 
-const formState = ref({
-    nombre: '',
-    categorias: [],
-    estado: [],
-    numero: 0,
-})
+//composable
+const { formState, updateTextInput, updateNumberInput, getSelectedRadioValue, getSelectedCheckboxValues } = useGetFormInputs(checkboxpOptions.categorias, radioOptions.estado)
+
 
 onMounted(async () =>
 {
@@ -86,38 +82,6 @@ onMounted(async () =>
 
 
 
-const updateTextInput = (value) =>
-{
-    // Actualiza el valor en tarea.formData o donde sea necesario
-    formState.value.nombre = value
-}
-
-const updateRadioOptions = (data) =>
-{
-    //marcar opcion seleccionada y desmarcar las otras
-    formState.value.estado.forEach(option =>
-    {
-        option.checked = option.id === data.id
-    })
-}
-
-const updateCheckboxOptions = (data) =>
-{
-    // Actualiza el valor en tarea.formData o donde sea necesario
-    const option = formState.value.categorias.find((option) => option.id === data.id)
-    if (option) {
-        option.checked = data.checked
-    }
-}
-
-const updateNumberInput = (value) =>
-{
-    // Actualiza el valor en tarea.formData o donde sea necesario
-    formState.value.numero = value
-}
-
-const getSelectedRadioValue = () => formState.value.estado.find((option) => option.checked)?.id
-const getSelectedCheckboxValues = () => formState.value.categorias.filter((option) => option.checked).map((option) => option.id)
 
 const updateTareaForm = () =>
 {

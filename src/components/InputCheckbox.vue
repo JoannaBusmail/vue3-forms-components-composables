@@ -31,7 +31,7 @@ const emit = defineEmits([ 'update:checked' ])
 
 const handleCheckbox = (event) =>
 {
-    emit('update:checked', { id: props.id, checked: event.target.checked })
+    emit('update:checked', props.id, event.target.checked)
 }
 
 </script>
