@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="scroll-margin-top: 60px;">
     <form
-      class="mt-3"
+      class="mt-5"
       @submit.prevent="handleUpdateForm"
     >
       <FormInputs
@@ -16,7 +16,9 @@
         @update:textInputValue="updateTextInput"
         @update:numberInputValue="updateNumberInput"
       ></FormInputs>
-      <ListaTareas></ListaTareas>
+      <div id="tareas">
+        <ListaTareas></ListaTareas>
+      </div>
     </form>
   </div>
 </template>
