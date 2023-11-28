@@ -26,7 +26,7 @@
 <script setup>
 import FormInputs from '@/components/FormInputs.vue'
 import ListaTareas from '@/components/ListaTareas.vue'
-import { watch, onMounted } from 'vue'
+import { watch } from 'vue'
 import { useTareaStore } from '@/stores/tareas'
 import { storeToRefs } from 'pinia'
 import { checkboxpOptions, radioOptions } from '../utils/formOptions'
@@ -42,18 +42,13 @@ const useTarea = useTareaStore()
 const { addTareas } = useTarea
 const { tareasList, tareasListUpdated } = storeToRefs(useTarea)
 
+
+//BEFORE USING JUST LOCAL STORAGE
 watch(tareasListUpdated, () =>
 {//actualizar solo la tarea modificada no toda la lista
   localStorage.setItem('tareas', JSON.stringify(tareasList.value))
 
 })
-
-onMounted(() =>
-{
-  // Inicializar la lista de tareas al cargar la página
-  tareasList.value = JSON.parse(localStorage.getItem('tareas')) || []
-})
-
 
 
 const handleUpdateForm = () =>

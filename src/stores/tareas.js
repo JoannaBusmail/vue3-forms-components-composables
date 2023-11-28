@@ -16,6 +16,8 @@ export const useTareaStore = defineStore('tareas', () => {
   })
 
   const tareasListUpdated = ref(false);
+
+
  /*if(localStorage.getItem('tareas')){
   tareasList.value = JSON.parse(localStorage.getItem('tareas'))
  }*/
@@ -170,7 +172,7 @@ const updateTarea = async (updatedTarea) => {
         'Content-Type': 'application/json'
       }
     });
-
+//
     tareasListUpdated.value = !tareasListUpdated.value;
     router.push('/');
   } catch (error) {
