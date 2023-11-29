@@ -10,6 +10,14 @@
                 class="btn btn-dark"
             >Tareas</a>
         </div>
+        <router-link
+            to="/registro"
+            class="navbar-brand"
+        >Registro</router-link>
+        <router-link
+            to="/login"
+            class="navbar-brand"
+        >Login</router-link>
     </div>
 </template>
 

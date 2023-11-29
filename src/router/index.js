@@ -15,6 +15,16 @@ const router = createRouter({
       path: '/editar/:id',
       name: 'editar',
       component: () => import('../views/EditarView.vue'),
+    },
+    {
+      path: '/registro',
+      name: 'registro',
+      component: () => import('../views/RegistroView.vue'),
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
     }
   ]
 })
